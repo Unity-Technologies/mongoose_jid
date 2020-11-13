@@ -31,6 +31,7 @@
 -export([to_lower/1]).
 -export([to_lus/1]).
 -export([to_bare/1]).
+-export([to_simple/1]).
 -export([replace_resource/2]).
 -export([binary_to_bare/1]).
 -export([str_tolower/1]).
@@ -206,6 +207,16 @@ to_bare(#jid{} = JID) ->
 to_bare({U, S, _R}) ->
     {U, S, <<>>};
 to_bare(error) ->
+    error.
+
+-spec to_simple(jid()) -> simple_jid();
+               (simple_jid())-> simple_jid();
+               (error) -> error.
+to_simple(#jid{user = U, server = S, resource = R}) ->
+    {U, S, R};
+to_simple({U, S, R}) ->
+    {U, S, R};
+to_simple(error) ->
     error.
 
 -spec replace_resource(jid(), resource()) -> jid() | error.
